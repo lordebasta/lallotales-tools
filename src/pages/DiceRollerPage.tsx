@@ -1,8 +1,29 @@
 import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonMenuButton, IonPage, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import './DiceRollerPage.css';
+import { useState } from 'react';
 
 const DiceRollerPage: React.FC = () => {
 
+  let buttons = [1, 2, 4, 6, 8, 10]
+  const [rolls, setRolls] = useState<number[]>([])
+
+  function rollDice(qty: number) {
+    const randomNumberInRange = (min: number, max: number) => {
+      return Math.floor(Math.random()
+        * (max - min + 1)) + min;
+    };
+
+    let rolls = []
+    for (let i = 0; i < qty; i++) {
+      let res = randomNumberInRange(1, 6)
+      rolls.push(res)
+      while (res === 6) {
+        res = randomNumberInRange(1, 6)
+        rolls.push(res)
+      }
+    }
+    return rolls
+  }
 
   return (
     <IonPage>
@@ -15,7 +36,7 @@ const DiceRollerPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen>
+      <IonContent fullscreen >
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Dice Roller</IonTitle>
@@ -23,50 +44,34 @@ const DiceRollerPage: React.FC = () => {
         </IonHeader>
         <div className="fillv v-flex-list justify-center align-center">
           <div style={{ flex: 1 }} className='center'>
-            <IonText class='ion-textj'>
-              Ciao
-            </IonText>
-          </div>
-          <div style={{ flex: 1 }} className='center'>
-            <div style={{
-              display: 'grid',
-              gap: '1rem'
-            }}>
-
-              <IonButton expand="full">Button 1</IonButton>
-              <IonButton expand="full">Button 1</IonButton>
-              <IonButton expand="full">Button 1</IonButton>
-              <IonButton expand="full">Button 1</IonButton>
-              <IonButton expand="full">Button 1</IonButton>
+            <div className="v-flex-list align-center">
+              <IonText color="primary" style={{ fontSize: 36 }}>
+                {rolls.reduce((partialSum, el) => partialSum + el, 0)}
+              </IonText>
+              <IonGrid>
+                {rolls.map((val: number) => {
+                  return <IonCol>
+                    {val === 6 && <IonText color="success">{val}</IonText>}
+                    {val !== 6 && <IonText>{val}</IonText>}
+                  </IonCol>
+                })}
+              </IonGrid>
             </div>
-            <IonGrid style={{ flex: 1 }}>
+          </div>
+          <div style={{ flex: 0 }} className='center'>
+            <IonGrid style={{ paddingBottom: '40px' }}>
               <IonRow>
-                <IonCol>
-                  <IonButton expand="full">Button 1</IonButton>
-                </IonCol>
-                <IonCol>
-                  <IonButton expand="full">Button 2</IonButton>
-                </IonCol>
-                <IonCol>
-                  <IonButton expand="full">Button 3</IonButton>
-                </IonCol>
-                <IonCol>
-                  <IonButton expand="full">Button 4</IonButton>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <IonButton expand="full">Button 5</IonButton>
-                </IonCol>
-                <IonCol>
-                  <IonButton expand="full">Button 6</IonButton>
-                </IonCol>
-                <IonCol>
-                  <IonButton expand="full">Button 7</IonButton>
-                </IonCol>
-                <IonCol>
-                  <IonButton expand="full">Button 8</IonButton>
-                </IonCol>
+                {buttons.map((value: number) => {
+                  return <IonCol>
+                    <IonButton expand="full" onClick={() => {
+                      setRolls(rollDice(value))
+                    }}>
+                      <IonText style={{ fontSize: 18 }}>
+                        {value.toString()}d6
+                      </IonText>
+                    </IonButton>
+                  </IonCol>
+                })}
               </IonRow>
             </IonGrid>
           </div>

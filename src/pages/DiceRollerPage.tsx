@@ -1,6 +1,6 @@
 import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonMenuButton, IonPage, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import './DiceRollerPage.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 const DiceRollerPage: React.FC = () => {
 
@@ -25,6 +25,20 @@ const DiceRollerPage: React.FC = () => {
     return rolls
   }
 
+  const Button = (value: number) =>
+    <IonButton
+      expand="full"
+      onClick={() => {
+        setRolls(rollDice(value))
+      }}
+      style={{ width: "5rem" }}
+    >
+      <IonText style={{ fontSize: 18 }}>
+        {value.toString()}d6
+      </IonText>
+    </IonButton >
+
+
   return (
     <IonPage>
       <IonHeader>
@@ -36,44 +50,47 @@ const DiceRollerPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen >
+      <IonContent fullscreen  >
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Dice Roller</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <div className="fillv v-flex-list justify-center align-center">
-          <div style={{ flex: 1 }} className='center'>
-            <div className="v-flex-list align-center">
-              <IonText color="primary" style={{ fontSize: 36 }}>
-                {rolls.reduce((partialSum, el) => partialSum + el, 0)}
-              </IonText>
-              <IonGrid>
-                {rolls.map((val: number) => {
-                  return <IonCol>
-                    {val === 6 && <IonText color="success">{val}</IonText>}
-                    {val !== 6 && <IonText>{val}</IonText>}
-                  </IonCol>
-                })}
+        <div className="center fillv" style={{ backgroundColor: "var(--bg-purple)" }}>
+          <div>
+            <div style={{ paddingBottom: 40 }} className='center'>
+              <div className="v-flex-list align-center">
+                <IonText color="primary" style={{ fontSize: 36 }}>
+                  {rolls.reduce((partialSum, el) => partialSum + el, 0)}
+                </IonText>
+                <IonGrid>
+                  {rolls.map((val: number) => {
+                    return <IonCol>
+                      {val === 6 && <IonText color="success">{val}</IonText>}
+                      {val !== 6 && <IonText>{val}</IonText>}
+                    </IonCol>
+                  })}
+                </IonGrid>
+              </div>
+            </div>
+            <div style={{}} className='center'>
+              <IonGrid style={{ paddingBottom: '40px' }}>
+                <IonRow>
+                  {buttons.slice(0, 3).map((value: number) => {
+                    return <IonCol>
+                      {Button(value)}
+                    </IonCol>
+                  })}
+                </IonRow>
+                <IonRow>
+                  {buttons.slice(3, 6).map((value: number) => {
+                    return <IonCol>
+                      {Button(value)}
+                    </IonCol>
+                  })}
+                </IonRow>
               </IonGrid>
             </div>
-          </div>
-          <div style={{ flex: 0 }} className='center'>
-            <IonGrid style={{ paddingBottom: '40px' }}>
-              <IonRow>
-                {buttons.map((value: number) => {
-                  return <IonCol>
-                    <IonButton expand="full" onClick={() => {
-                      setRolls(rollDice(value))
-                    }}>
-                      <IonText style={{ fontSize: 18 }}>
-                        {value.toString()}d6
-                      </IonText>
-                    </IonButton>
-                  </IonCol>
-                })}
-              </IonRow>
-            </IonGrid>
           </div>
         </div>
       </IonContent>

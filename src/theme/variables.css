@@ -1,2 +1,9 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
+
+:root {
+    --bg-purple: #1F1F33;
+    --orange: #F89753;
+
+    --ion-color-primary: var(--orange);
+}

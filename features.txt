@@ -1,0 +1,32 @@
+User can:
+- login
+- logout
+- register
+- update character
+- share character to anyone with link
+
+api endpoints:
+- update character
+
+character table:
+- name
+- level
+- description
+- lingue
+- movimento
+- pf
+- maxpf
+- affaticamento
+- stati salute
+- bio
+- image
+- leggendary list
+- master list 
+- expert list
+- apprentice list
+- common
+- traits bson
+- monete
+- inventario bson
+
+dice-roller is available for anyone

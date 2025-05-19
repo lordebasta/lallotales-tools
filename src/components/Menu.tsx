@@ -13,6 +13,7 @@ import {
 import { useLocation } from 'react-router-dom';
 import { diceOutline } from 'ionicons/icons';
 import './Menu.css';
+import { DiceRoller } from './DiceRoller';
 
 interface AppPage {
   url: string;
@@ -21,11 +22,11 @@ interface AppPage {
 }
 
 const appPages: AppPage[] = [
-  {
-    title: 'Dice Roller',
-    url: '/dice-roller',
-    icon: diceOutline,
-  },
+  // {
+  //   title: 'Dice Roller',
+  //   url: '/dice-roller',
+  //   icon: diceOutline,
+  // },
 ];
 
 
@@ -49,8 +50,21 @@ const Menu: React.FC = () => {
             );
           })}
         </IonList>
+
+        <IonList id="inbox-list">
+          <IonListHeader>My characters</IonListHeader>
+
+          <IonMenuToggle key={0} autoHide={false}>
+            <IonItem className={location.pathname === '/character' ? 'selected' : ''} routerLink={'/character'} routerDirection="none" lines="none" detail={false}>
+              <IonLabel>{"Character"}</IonLabel>
+            </IonItem>
+          </IonMenuToggle>
+        </IonList>
       </IonContent>
-    </IonMenu>
+      <div style={{ backgroundColor: "var(--ion-item-background, var(--ion-background-color, #fff)" }}>
+        <DiceRoller />
+      </div>
+    </IonMenu >
   );
 };
 

@@ -3,7 +3,6 @@ import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
 import Page from './pages/Page';
-import DiceRollerPage from './pages/DiceRollerPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -34,15 +33,17 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import DiceRollerPage from './pages/DiceRollerPage';
 
 setupIonicReact();
 
 const App: React.FC = () => {
+
   return (
     <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId="main">
-          {/* <Menu /> */}
+          <Menu />
           <IonRouterOutlet id="main">
             <Route path="/" exact={true}>
               <Redirect to="/dice-roller" />

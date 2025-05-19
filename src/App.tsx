@@ -34,6 +34,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.css';
 import DiceRollerPage from './pages/DiceRollerPage';
+import Character from './pages/Character';
 
 setupIonicReact();
 
@@ -48,8 +49,11 @@ const App: React.FC = () => {
             <Route path="/" exact={true}>
               <Redirect to="/dice-roller" />
             </Route>
-            <Route path="/dice-roller">
+            <Route path="/dice-roller" exact={true}>
               <DiceRollerPage />
+            </Route>
+            <Route path="/character" exact={true}>
+              <Character />
             </Route>
             <Route path="/folder/:name" exact={true}>
               <Page />

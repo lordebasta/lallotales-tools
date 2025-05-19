@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { browserLocalPersistence, getAuth, GoogleAuthProvider, setPersistence, useDeviceLanguage } from 'firebase/auth';
 import { signInWithPopup } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -8,7 +8,7 @@ const firebaseConfig = {
     authDomain: import.meta.env.VITE_AUTH_DOMAIN,
     projectId: import.meta.env.VITE_PROJECT_ID,
     storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_MESSAGE_SENDER_ID,
+    messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
     appId: import.meta.env.VITE_APP_ID,
     measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 };
@@ -17,8 +17,11 @@ console.log('Firebase Config:', firebaseConfig);
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const auth = getAuth(app);
+auth.useDeviceLanguage();
 const googleProvider = new GoogleAuthProvider();
+
+await setPersistence(auth, browserLocalPersistence)
 
 export const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
@@ -40,4 +43,12 @@ export const signInWithGoogle = () => {
             const credential = GoogleAuthProvider.credentialFromError(error);
             console.error('Error signing in:', errorCode, errorMessage, email, credential);
         });
+}
+
+export const signOut = () => {
+    auth.signOut().then(() => {
+        console.log('User signed out');
+    }).catch((error) => {
+        console.error('Error signing out:', error);
+    });
 }

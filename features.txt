@@ -20,7 +20,7 @@ character table:
 - stati salute
 - bio
 - image
-- leggendary list
+- legendary list
 - master list 
 - expert list
 - apprentice list

@@ -24,34 +24,35 @@ export class Character {
     name: string = '';
     level: number = 1;
     description: string = '';
-    languages: string[] = ["Comune"];
     movement: number = 5;
     currentPf: number = 0;
     fatique: number = 0;
     healthState: string = '';
     imageUrl: string = '';
-    leggendary: string[] = [];
-    mastery: string[] = [];
-    expert: string[] = [];
-    apprentice: string[] = [];
-    common: string[] = [
-        'Agilità',
-        'Conoscenza',
-        'Convincere',
-        'Esibirsi',
-        'Forza',
-        'Furto',
-        'Ingegneria',
-        'Magia',
-        'Medicina',
-        'Mira',
-        'Mischia',
-        'Nascondersi',
-        'Notare',
-        'Pilotare',
-        'Sopravvivenza',
-        'Volontà',
-    ];
+    skills: Map<string, Set<string>> = new Map<string, Set<string>>([
+        ['legendary', new Set<string>()],
+        ['master', new Set<string>()],
+        ['expert', new Set<string>()],
+        ['apprentice', new Set<string>()],
+        ['common', new Set<string>([
+            'Agilità',
+            'Conoscenza',
+            'Convincere',
+            'Esibirsi',
+            'Forza',
+            'Furto',
+            'Ingegneria',
+            'Magia',
+            'Medicina',
+            'Mira',
+            'Mischia',
+            'Nascondersi',
+            'Notare',
+            'Pilotare',
+            'Sopravvivenza',
+            'Volontà',
+        ])]
+    ]);
     monete: number = 10;
     traits: Trait[] = [];
     inventario: InventorySection[] = [new InventorySection('Addosso')];

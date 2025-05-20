@@ -106,17 +106,16 @@ export const characterConverter = {
         name: char.name,
         level: char.level,
         description: char.description,
-        languages: char.languages,
         movement: char.movement,
         currentPf: char.currentPf,
         fatique: char.fatique,
         healthState: char.healthState,
         imageUrl: char.imageUrl,
-        leggendary: char.leggendary,
-        mastery: char.mastery,
-        expert: char.expert,
-        apprentice: char.apprentice,
-        common: char.common,
+        legendary: Array.from(char.skills.get('legendary')!),
+        master: Array.from(char.skills.get('master')!),
+        expert: Array.from(char.skills.get('expert')!),
+        apprentice: Array.from(char.skills.get('apprentice')!),
+        common: Array.from(char.skills.get('common')!),
         monete: char.monete,
         traits: char.traits.map(trait => traitConverter.toFirestore(trait)),
         inventario: char.inventario.map(section => inventorySectionConverter.toFirestore(section)),
@@ -129,17 +128,16 @@ export const characterConverter = {
         char.name = data.name;
         char.level = data.level;
         char.description = data.description;
-        char.languages = data.languages;
         char.movement = data.movement;
         char.currentPf = data.currentPf;
         char.fatique = data.fatique;
         char.healthState = data.healthState;
         char.imageUrl = data.imageUrl;
-        char.leggendary = data.leggendary;
-        char.mastery = data.mastery;
-        char.expert = data.expert;
-        char.apprentice = data.apprentice;
-        char.common = data.common;
+        char.skills.set('legendary', new Set(data.legendary));
+        char.skills.set('master', new Set(data.master));
+        char.skills.set('expert', new Set(data.expert));
+        char.skills.set('apprentice', new Set(data.apprentice));
+        char.skills.set('common', new Set(data.common));
         char.monete = data.monete;
         char.traits = (data.traits || []).map((traitData: DocumentData) => {
             return traitConverter.fromFirestore({

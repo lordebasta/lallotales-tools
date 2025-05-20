@@ -35,12 +35,13 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './theme/variables.css';
 import DiceRollerPage from './pages/DiceRollerPage';
 import Character from './pages/Character';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 setupIonicReact();
 
-const App: React.FC = () => {
-
-  return (
+const App: React.FC = () => (
+  <Provider store={store}>
     <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId="main">
@@ -52,7 +53,7 @@ const App: React.FC = () => {
             <Route path="/dice-roller" exact={true}>
               <DiceRollerPage />
             </Route>
-            <Route path="/character" exact={true}>
+            <Route path="/character/:index" exact={true}>
               <Character />
             </Route>
             <Route path="/folder/:name" exact={true}>
@@ -62,7 +63,7 @@ const App: React.FC = () => {
         </IonSplitPane>
       </IonReactRouter>
     </IonApp>
-  );
-};
+  </Provider>
+);
 
 export default App;

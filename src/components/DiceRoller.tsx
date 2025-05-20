@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export const DiceRoller: React.FC = () => {
 
-    let buttons = [1, 2, 4, 6, 8, 10]
+    const buttons = [1, 2, 4, 6, 8, 10]
     const [rolls, setRolls] = useState<number[]>([])
 
     function rollDice(qty: number) {
@@ -12,7 +12,7 @@ export const DiceRoller: React.FC = () => {
                 * (max - min + 1)) + min;
         };
 
-        let rolls = []
+        const rolls = []
         for (let i = 0; i < qty; i++) {
             let res = randomNumberInRange(1, 6)
             rolls.push(res)

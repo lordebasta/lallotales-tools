@@ -9,16 +9,19 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote,
+  IonText,
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { diceOutline, personCircleOutline } from 'ionicons/icons';
+import { personCircleOutline } from 'ionicons/icons';
 import './Menu.css';
 import { DiceRoller } from './DiceRoller';
 import React, { useState, useRef, useEffect } from 'react';
-import { auth, signInWithGoogle, signOut } from '../services/firebase';
+import { auth, signInWithGoogle, signOut } from '../services/fireauth';
 import { onAuthStateChanged } from 'firebase/auth';
+import { FirestoreService } from '../services/firestore';
+import { shallowEqual, useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 interface AppPage {
   url: string;
@@ -41,6 +44,7 @@ const Menu: React.FC = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const characters = useSelector((state: RootState) => state.character.characters, shallowEqual);
 
   const handleUserIconClick = () => {
     setShowDropdown((prev) => !prev);
@@ -55,6 +59,10 @@ const Menu: React.FC = () => {
     signOut();
     setShowDropdown(false);
   };
+
+  const handleNewCharacter = async () => {
+    await FirestoreService.getInstance().createNewCharacter();
+  }
 
   useEffect(() => {
     if (!showDropdown) return;
@@ -149,11 +157,20 @@ const Menu: React.FC = () => {
         <IonList id="inbox-list">
           <IonListHeader>I miei personaggi</IonListHeader>
           {isSignedIn ?
-            <IonMenuToggle key={0} autoHide={false}>
-              <IonItem className={location.pathname === '/character' ? 'selected' : ''} routerLink={'/character'} routerDirection="none" lines="none" detail={false}>
-                <IonLabel>{"Character"}</IonLabel>
-              </IonItem>
-            </IonMenuToggle>
+            <div>
+              <IonButton expand="block" onClick={handleNewCharacter} style={{ marginTop: 8 }}>
+                <IonText style={{ textWeight: 'bold' }}>Nuovo Personaggio</IonText>
+              </IonButton>
+              {
+                characters.map((character, index) => (
+                  <IonMenuToggle key={index + 1} autoHide={false}>
+                    <IonItem className={location.pathname === '/character' ? 'selected' : ''} routerLink={'/character/' + index} routerDirection="none" lines="none" detail={false}>
+                      <IonLabel>{character.name}</IonLabel>
+                    </IonItem>
+                  </IonMenuToggle>
+                ))
+              }
+            </div>
             :
             <IonButton onClick={handleSignIn} style={{ textAlign: 'start' }} fill="clear">
               Accedi per vedere i tuoi personaggi

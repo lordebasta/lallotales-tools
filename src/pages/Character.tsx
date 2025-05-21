@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { Redirect, useParams } from 'react-router';
 import React, { useState } from 'react';
 import { auth } from '../services/fireauth';
@@ -85,41 +85,39 @@ const CharacterPage: React.FC = () => {
           </div>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            maxWidth: 1100,
-            margin: '0 auto',
-            height: '100%',
-            minHeight: 600,
-          }}
-        >
-          {/* Main content: InfoPart, TraitsPart, InventoryPart */}
-          <div style={{ flex: 2, display: 'flex', flexDirection: 'column', borderRight: '1px solid #eee' }}>
-            {/* InfoPart at the top */}
-            <div style={{ borderBottom: '1px solid #eee' }}>
-              <InfoPart
-                char={char}
-                maxPf={maxPf}
-                handleChange={handleChange}
-              />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          maxWidth: 1100,
+          margin: '0 auto',
+          height: '100%',
+          minHeight: 600,
+        }}
+      >
+        {/* Main content: InfoPart, TraitsPart, InventoryPart */}
+        <div style={{ flex: 2, display: 'flex', flexDirection: 'column', borderRight: '1px solid #eee' }}>
+          {/* InfoPart at the top */}
+          <div style={{ borderBottom: '1px solid #eee' }}>
+            <InfoPart
+              char={char}
+              maxPf={maxPf}
+              handleChange={handleChange}
+            />
+          </div>
+          {/* Traits and Inventory side by side */}
+          <div style={{ display: 'flex', flex: 1, minHeight: 300 }}>
+            <div style={{ flex: 1, borderRight: '1px solid #eee' }}>
+              <TraitsPart char={char} setStateChar={setStateChar} />
             </div>
-            {/* Traits and Inventory side by side */}
-            <div style={{ display: 'flex', flex: 1, minHeight: 300 }}>
-              <div style={{ flex: 1, borderRight: '1px solid #eee' }}>
-                <TraitsPart />
-              </div>
-              <div style={{ flex: 1 }}>
-                <InventoryPart />
-              </div>
+            <div style={{ flex: 1 }}>
+              <InventoryPart />
             </div>
           </div>
-          {skillsPart(handleDrop, char, handleDragStart, draggedSkill)}
         </div>
-      </IonContent>
-    </IonPage>
+        {skillsPart(handleDrop, char, handleDragStart, draggedSkill)}
+      </div>
+    </IonPage >
   );
 };
 

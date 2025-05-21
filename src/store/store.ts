@@ -3,8 +3,8 @@ import characterReducer from './characterSlice';
 
 export const store = configureStore({
   reducer: {
-    character: characterReducer,
-  },
+    characters: characterReducer,
+  }
 });
 
 export type RootState = ReturnType<typeof store.getState>;

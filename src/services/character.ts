@@ -57,3 +57,21 @@ export class Character {
     traits: Trait[] = [];
     inventario: InventorySection[] = [new InventorySection('Addosso')];
 }
+
+
+export function serializeSkills(skills: Map<string, Set<string>>) {
+    return Object.fromEntries(
+        Array.from(skills.entries()).map(([k, v]) => [k, Array.from(v)])
+    );
+}
+
+export function jsonifyCharacter(character: Character) {
+    return JSON.stringify({
+        ...character,
+        skills: serializeSkills(character.skills),
+    });
+}
+
+export function jsonifyCharacters(characters: Character[]) {
+    return characters.map(jsonifyCharacter);
+}

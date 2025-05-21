@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonLabel, IonInput, IonTextarea } from '@ionic/react';
-import { Character } from '../services/character';
+import { Character } from '../../services/character';
 import './InfoPart.css'
 
 interface InfoPartProps {

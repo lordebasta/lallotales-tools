@@ -20,8 +20,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { auth, signInWithGoogle, signOut } from '../services/fireauth';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FirestoreService } from '../services/firestore';
-import { shallowEqual, useSelector } from 'react-redux';
-import { RootState } from '../store/store';
+import { useSelector } from 'react-redux';
+import { selectCharactersWithMap } from '../store/characterSlice';
 
 interface AppPage {
   url: string;
@@ -44,7 +44,7 @@ const Menu: React.FC = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const characters = useSelector((state: RootState) => state.character.characters, shallowEqual);
+  const characters = useSelector(selectCharactersWithMap);
 
   const handleUserIconClick = () => {
     setShowDropdown((prev) => !prev);

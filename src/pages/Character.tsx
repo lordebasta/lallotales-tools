@@ -2,16 +2,15 @@ import { IonButton, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, I
 import { Redirect, useParams } from 'react-router';
 import React, { useState } from 'react';
 import { auth } from '../services/fireauth';
-import { Character } from '../services/character';
+import { Character, jsonifyCharacter } from '../services/character';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../store/store';
 import LoginRequiredPage from './LoginRequiredPage';
 import { FirestoreService } from '../services/firestore';
 
-import { setCharacter } from '../store/characterSlice';
-import InfoPart from './InfoPart';
-import TraitsPart from './TraitsPart';
-import InventoryPart from './InventoryPart';
+import { selectCharactersWithMap, setCharacter } from '../store/characterSlice';
+import InfoPart from './character/InfoPart';
+import TraitsPart from './character/TraitsPart';
+import InventoryPart from './character/InventoryPart';
 
 
 
@@ -19,7 +18,7 @@ const CharacterPage: React.FC = () => {
   const { index } = useParams<{ index: string }>();
   const dispatch = useDispatch();
 
-  const characters = useSelector((state: RootState) => state.character.characters);
+  const characters = useSelector(selectCharactersWithMap);
   const [char, setStateChar] = useState<Character>(() => {
     if (characters.length < Number(index) + 1) {
       return {} as Character;
@@ -28,17 +27,19 @@ const CharacterPage: React.FC = () => {
   });
 
   const [maxPf] = useState<number>(0);
-  const skillGrades = ['common', 'apprentice', 'expert', 'master', 'legendary'];
 
   const handleChange = (field: keyof Character, value: unknown) => {
-    setStateChar(prev => ({ ...prev, [field]: value }));
+    setStateChar(prev => {
+      const updated = { ...prev, [field]: value };
+      return updated;
+    });
   };
 
   const saveCharacter = async () => {
-    dispatch(setCharacter({ index: Number(index), character: char }));
+    dispatch(setCharacter({ index: Number(index), character: jsonifyCharacter(char) }));
     try {
       await FirestoreService.getInstance().setCharacter(char);
-      alert('Character saved successfully!');
+      console.log('Character saved successfully!');
     } catch (error) {
       console.error('Error saving character:', error);
       alert('Failed to save character.');
@@ -115,65 +116,73 @@ const CharacterPage: React.FC = () => {
               </div>
             </div>
           </div>
-          {/* Skills column on the right */}
-          <div style={{
-            flex: 1,
-            padding: 16,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            minWidth: 220,
-            maxWidth: 300,
-          }}>
-            <strong style={{ marginBottom: 12, fontSize: 16 }}>Skills</strong>
-            <div style={{ width: '100%' }}>
-              {skillGrades.map((level) => (
-                <div
-                  key={level}
-                  onDragOver={e => e.preventDefault()}
-                  onDrop={() => handleDrop(level)}
-                  style={{ marginBottom: 12 }}
-                >
-                  <strong style={{ display: 'block', marginBottom: 4, fontSize: 13 }}>
-                    {level.charAt(0).toUpperCase() + level.slice(1)}
-                  </strong>
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
-                    gap: 4,
-                    justifyItems: 'center'
-                  }}>
-                    {Array.from(char.skills.get(level)!).map((skill: string) => (
-                      <IonButton
-                        key={skill}
-                        draggable
-                        onDragStart={() => handleDragStart(level, skill)}
-                        style={{
-                          minWidth: 0,
-                          fontSize: 12,
-                          padding: '2px 8px',
-                          borderRadius: 6,
-                          border: '1px solid #ccc',
-                          background: draggedSkill?.startGrade === level ? '#eee' : '#fafafa',
-                          cursor: 'grab',
-                          margin: 2,
-                          height: 24,
-                          lineHeight: '20px'
-                        }}
-                      >
-                        {skill}
-                      </IonButton>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {skillsPart(handleDrop, char, handleDragStart, draggedSkill)}
         </div>
       </IonContent>
     </IonPage>
   );
 };
+
+function skillsPart(handleDrop: (targetGrade: string) => void, char: Character, handleDragStart: (grade: string, skill: string) => void, draggedSkill: { startGrade: string; skill: string; } | null) {
+  const skillGrades = ['common', 'apprentice', 'expert', 'master', 'legendary'];
+  const skillNames = ['Comune', 'Apprendista', 'Esperto', 'Maestro', 'Leggendario'];
+
+  return <div style={{
+    flex: 1,
+    padding: 16,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    minWidth: 220,
+    maxWidth: 300,
+  }}>
+    <strong style={{ marginBottom: 12, fontSize: 16 }}>Abilità</strong>
+    <div style={{ width: '100%' }}>
+      {skillGrades.reverse().map((level, index) => (
+        <div
+          key={level}
+          onDragOver={e => e.preventDefault()}
+          onDrop={() => handleDrop(level)}
+          style={{ marginBottom: 12 }}
+        >
+          <strong style={{ display: 'block', marginBottom: 4, fontSize: 13 }}>
+            {skillNames[skillNames.length - index - 1]}
+          </strong>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: 4,
+            justifyItems: 'center'
+          }}>
+            {Array.from(char.skills.get(level)!).map((skill: string) => (
+              <IonButton
+                key={skill}
+                draggable
+                onDragStart={() => handleDragStart(level, skill)}
+                style={{
+                  minWidth: 0,
+                  fontSize: 12,
+                  padding: '2px 8px',
+                  borderRadius: 6,
+                  border: '1px solid #ccc',
+                  background: draggedSkill?.startGrade === level ? '#eee' : '#fafafa',
+                  cursor: 'grab',
+                  margin: 2,
+                  height: 24,
+                  lineHeight: '20px',
+                  width: '100%',
+                }}
+              >
+                {skill}
+              </IonButton>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>;
+}
+
 
 export default CharacterPage;

@@ -33,37 +33,57 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import DiceRollerPage from './pages/DiceRollerPage';
 import Character from './pages/Character';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+import { auth } from './services/fireauth';
+import LoginRequiredPage from './pages/LoginRequiredPage';
+import { useEffect } from 'react';
+import { FirestoreService } from './services/firestore';
+import { setCharacters } from './store/characterSlice';
+import { jsonifyCharacters } from './services/character';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <Provider store={store}>
-    <IonApp>
-      <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <Menu />
-          <IonRouterOutlet id="main">
-            <Route path="/" exact={true}>
-              <Redirect to="/dice-roller" />
-            </Route>
-            <Route path="/dice-roller" exact={true}>
-              <DiceRollerPage />
-            </Route>
-            <Route path="/character/:index" exact={true}>
-              <Character />
-            </Route>
-            <Route path="/folder/:name" exact={true}>
-              <Page />
-            </Route>
-          </IonRouterOutlet>
-        </IonSplitPane>
-      </IonReactRouter>
-    </IonApp>
-  </Provider>
-);
+const App: React.FC = () => {
+  useEffect(() => {
+    // Initialize store with characters from Firestore
+    const fetchCharacters = async () => {
+      try {
+        const characters = await FirestoreService.getInstance().getCharacters();
+        store.dispatch(setCharacters(jsonifyCharacters(characters)));
+      } catch (error) {
+        console.error('Error fetching characters:', error);
+      }
+    };
+    fetchCharacters();
+  }, []);
+
+  return (
+    <Provider store={store}>
+      <IonApp>
+        <IonReactRouter>
+          <IonSplitPane contentId="main">
+            <Menu />
+            <IonRouterOutlet id="main">
+              <Route path="/" exact={true}>
+                {auth.currentUser ? <Redirect to="/home" /> : <Redirect to="/login" />}
+              </Route>
+              <Route path="/login" exact={true}>
+                <LoginRequiredPage />
+              </Route>
+              <Route path="/character/:index" exact={true}>
+                <Character />
+              </Route>
+              <Route path="/folder/:name" exact={true}>
+                <Page />
+              </Route>
+            </IonRouterOutlet>
+          </IonSplitPane>
+        </IonReactRouter>
+      </IonApp>
+    </Provider>
+  );
+};
 
 export default App;

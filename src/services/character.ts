@@ -26,6 +26,7 @@ export class Character {
     description: string = '';
     movement: number = 5;
     currentPf: number = 0;
+    maxPf: number = 0;
     fatique: number = 0;
     healthState: string = '';
     imageUrl: string = '';
@@ -53,9 +54,9 @@ export class Character {
             'Volontà',
         ])]
     ]);
-    monete: number = 10;
+    coins: number = 10;
     traits: Trait[] = [];
-    inventario: InventorySection[] = [new InventorySection('Addosso')];
+    equipment: InventorySection[] = [new InventorySection('Addosso')];
 }
 
 

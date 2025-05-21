@@ -111,7 +111,7 @@ const CharacterPage: React.FC = () => {
               <TraitsPart char={char} setStateChar={setStateChar} />
             </div>
             <div style={{ flex: 1 }}>
-              <InventoryPart />
+              <InventoryPart char={char} setStateChar={setStateChar} />
             </div>
           </div>
         </div>

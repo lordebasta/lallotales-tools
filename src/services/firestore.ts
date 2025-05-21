@@ -108,6 +108,7 @@ export const characterConverter = {
         description: char.description,
         movement: char.movement,
         currentPf: char.currentPf,
+        maxPf: char.maxPf,
         fatique: char.fatique,
         healthState: char.healthState,
         imageUrl: char.imageUrl,
@@ -116,9 +117,9 @@ export const characterConverter = {
         expert: Array.from(char.skills.get('expert')!),
         apprentice: Array.from(char.skills.get('apprentice')!),
         common: Array.from(char.skills.get('common')!),
-        monete: char.monete,
+        coins: char.coins,
         traits: char.traits.map(trait => traitConverter.toFirestore(trait)),
-        inventario: char.inventario.map(section => inventorySectionConverter.toFirestore(section)),
+        equipment: char.equipment.map(section => inventorySectionConverter.toFirestore(section)),
         userId: auth.currentUser?.uid,
     }),
     fromFirestore: (snapshot: QueryDocumentSnapshot, options: SnapshotOptions) => {
@@ -130,6 +131,7 @@ export const characterConverter = {
         char.description = data.description;
         char.movement = data.movement;
         char.currentPf = data.currentPf;
+        char.maxPf = data.maxPf;
         char.fatique = data.fatique;
         char.healthState = data.healthState;
         char.imageUrl = data.imageUrl;
@@ -138,13 +140,13 @@ export const characterConverter = {
         char.skills.set('expert', new Set(data.expert));
         char.skills.set('apprentice', new Set(data.apprentice));
         char.skills.set('common', new Set(data.common));
-        char.monete = data.monete;
+        char.coins = data.coins;
         char.traits = (data.traits || []).map((traitData: DocumentData) => {
             return traitConverter.fromFirestore({
                 data: () => traitData
             } as QueryDocumentSnapshot, options);
         });
-        char.inventario = (data.inventario || []).map((sectionData: DocumentData) => {
+        char.equipment = (data.equipment || []).map((sectionData: DocumentData) => {
             return inventorySectionConverter.fromFirestore({
                 data: () => sectionData
             } as QueryDocumentSnapshot, options);

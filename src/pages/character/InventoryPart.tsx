@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonAccordion, IonAccordionGroup, IonItem, IonLabel, IonList, IonButton, IonIcon, IonAlert, IonPopover, IonCol, IonRow } from '@ionic/react';
+import { IonAccordion, IonAccordionGroup, IonItem, IonLabel, IonList, IonButton, IonIcon, IonAlert, IonPopover, IonCol, IonRow, IonGrid } from '@ionic/react';
 import { Character, InventorySection, InventoryItem } from '../../services/character';
 import { addOutline, createOutline, trash } from 'ionicons/icons';
 import { ConfirmAlert } from '../../components/ConfirmAlert';
@@ -121,53 +121,64 @@ const InventoryPart: React.FC<{ char: Character, setStateChar: React.Dispatch<Re
                             <IonLabel>{section.name}</IonLabel>
                         </IonItem>
                         <div slot="content" style={{ padding: 8, display: 'flex', flexDirection: 'column', justifyContent: 'stretch' }}>
-                            <IonButton
-                                size="small"
+                            <button
+                                style={{
+                                    backgroundColor: 'var(--orange)',
+                                    color: 'black',
+                                    fontSize: 16,
+                                    borderRadius: '4px 4px 0 0'
+                                }}
                                 onClick={() => {
                                     setSectionPopoverState({ open: true, sectionIdx: idx });
                                 }}
                             >
                                 <IonIcon icon={createOutline} />
                                 Modifica
-                            </IonButton>
+                            </button>
 
                             <IonList>
                                 {section.items.map((item: InventoryItem, i: number) => (
-                                    <IonItem key={item.name + i}>
-                                        <IonRow class='fillh flexbox'>
-                                            <IonCol style={{ flex: 1 }}>
-                                                <IonLabel> <strong>{item.name}</strong> <div>{item.description}</div>
-                                                    <div>Quantità: {item.quantity}</div>
-                                                </IonLabel>
-                                            </IonCol>
-                                            <IonCol style={{ flex: 0 }}>
-                                                <IonButton
-                                                    fill="clear"
-                                                    style={{ fontSize: 15, color: "white" }}
-                                                    onClick={
-                                                        () => {
-                                                            setEditItemAlertState({ open: true, sectionIdx: idx, itemIdx: i });
+                                    <IonItem style={{ margin: 0, }} key={item.name + i}>
+                                        <IonGrid style={{ padding: '4px 0px 4px 0px' }}>
+                                            <IonRow class='fillh flexbox' style={{ alingItems: 'center' }}>
+                                                <IonCol style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+                                                    <IonLabel>
+                                                        <strong>{item.name}</strong>
+                                                    </IonLabel>
+                                                </IonCol>
+                                                <IonCol style={{ flex: 0 }}>
+                                                    <button
+                                                        style={{ fontSize: 18, color: "white" }}
+                                                        onClick={
+                                                            () => {
+                                                                setEditItemAlertState({ open: true, sectionIdx: idx, itemIdx: i });
+                                                            }
                                                         }
-                                                    }
-                                                >
-                                                    <IonIcon icon={createOutline} />
-                                                </IonButton>
-                                                <IonButton
-                                                    fill="clear"
-                                                    style={{ fontSize: 15, color: "white" }}
-                                                    onClick={() => {
-                                                        setConfirmAlertState({
-                                                            open: true,
-                                                            sectionIdx: idx,
-                                                            itemIdx: i,
-                                                        })
-                                                    }
-                                                    }
-                                                >
-                                                    <IonIcon icon={trash} />
-                                                </IonButton>
-                                            </IonCol>
-                                        </IonRow>
+                                                    >
+                                                        <IonIcon icon={createOutline} />
+                                                    </button>
+                                                </IonCol>
+                                                <IonCol style={{ flex: 0 }}>
+                                                    <button
+                                                        style={{ fontSize: 18, color: "white" }}
+                                                        onClick={() => {
+                                                            setConfirmAlertState({
+                                                                open: true,
+                                                                sectionIdx: idx,
+                                                                itemIdx: i,
+                                                            })
+                                                        }
+                                                        }
+                                                    >
+                                                        <IonIcon icon={trash} />
+                                                    </button>
+                                                </IonCol>
+                                            </IonRow>
+                                            <IonRow>
+                                                <div>{item.description}</div>
+                                                <div> Quantità: {item.quantity}</div>
+                                            </IonRow>
+                                        </IonGrid>
                                     </IonItem>
                                 ))}
                             </IonList>

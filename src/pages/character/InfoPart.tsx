@@ -38,7 +38,7 @@ const InfoPart: React.FC<InfoPartProps> = ({
         </div>
         <div>
             <IonLabel position="stacked">Max PF</IonLabel>
-            <IonInput type="number" value={maxPf} />
+            <IonInput type="number" value={char.maxPf} onIonChange={e => handleChange('maxPf', Number(e.detail.value))} />
         </div>
         {/* Description */}
 

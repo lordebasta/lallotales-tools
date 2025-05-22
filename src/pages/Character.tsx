@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonHeader, IonMenuButton, IonPage, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { Redirect, useParams } from 'react-router';
 import React, { useState } from 'react';
 import { auth } from '../services/fireauth';
@@ -11,7 +11,6 @@ import { selectCharactersWithMap, setCharacter } from '../store/characterSlice';
 import InfoPart from './character/InfoPart';
 import TraitsPart from './character/TraitsPart';
 import InventoryPart from './character/InventoryPart';
-
 
 
 const CharacterPage: React.FC = () => {
@@ -130,12 +129,12 @@ function skillsPart(handleDrop: (targetGrade: string) => void, char: Character, 
     padding: 16,
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'start',
     justifyContent: 'flex-start',
     minWidth: 220,
     maxWidth: 300,
   }}>
-    <strong style={{ marginBottom: 12, fontSize: 16 }}>Abilità</strong>
+    <h2>Abilità</h2>
     <div style={{ width: '100%' }}>
       {skillGrades.reverse().map((level, index) => (
         <div
@@ -144,9 +143,9 @@ function skillsPart(handleDrop: (targetGrade: string) => void, char: Character, 
           onDrop={() => handleDrop(level)}
           style={{ marginBottom: 12 }}
         >
-          <strong style={{ display: 'block', marginBottom: 4, fontSize: 13 }}>
+          <h4 style={{ color: 'var(--orange)', marginBottom: 4 }}>
             {skillNames[skillNames.length - index - 1]}
-          </strong>
+          </h4>
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
@@ -154,26 +153,25 @@ function skillsPart(handleDrop: (targetGrade: string) => void, char: Character, 
             justifyItems: 'center'
           }}>
             {Array.from(char.skills.get(level)!).map((skill: string) => (
-              <IonButton
+              <button
                 key={skill}
                 draggable
                 onDragStart={() => handleDragStart(level, skill)}
                 style={{
                   minWidth: 0,
-                  fontSize: 12,
-                  padding: '2px 8px',
+                  padding: '6px 8px',
                   borderRadius: 6,
-                  border: '1px solid #ccc',
-                  background: draggedSkill?.startGrade === level ? '#eee' : '#fafafa',
+                  background: '#1e1e1e',
                   cursor: 'grab',
                   margin: 2,
-                  height: 24,
                   lineHeight: '20px',
                   width: '100%',
+                  color: 'white',
+                  fontSize: 15
                 }}
               >
                 {skill}
-              </IonButton>
+              </button>
             ))}
           </div>
         </div>

@@ -1,3 +1,5 @@
-IonInput:disabled {
-    color: 'white'
+@import url('../../theme/variables.css');
+
+ion-label {
+    color: var(--orange)
 }

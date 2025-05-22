@@ -4,8 +4,16 @@ http://ionicframework.com/docs/theming/ */
 :root {
     --bg-purple: #1F1F33;
     --orange: #F89753;
-
     --ion-color-primary: var(--orange);
+}
+
+button {
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0)
+}
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.103);
 }
 
 .v-flex-list {
@@ -28,6 +36,14 @@ http://ionicframework.com/docs/theming/ */
     align-items: center;
 }
 
+.flexbox {
+    display: flex;
+}
+
 .fillv {
     height: 100%
+}
+
+.fillh {
+    width: 100%
 }

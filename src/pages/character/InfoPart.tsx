@@ -38,12 +38,13 @@ const InfoPart: React.FC<InfoPartProps> = ({
         </div>
         <div>
             <IonLabel position="stacked">Max PF</IonLabel>
-            <IonInput type="number" value={maxPf} disabled={true} style={{ "color:disabled": 'white' }} />
+            <IonInput type="number" value={maxPf} />
         </div>
         {/* Description */}
+
         <div style={{ gridColumn: '1/5' }}>
-            <IonLabel position="stacked">Description</IonLabel>
-            <IonTextarea value={char.description} onIonChange={e => handleChange('description', e.detail.value!)} />
+            <IonLabel position="stacked">Health State</IonLabel>
+            <IonInput value={char.healthState} onIonChange={e => handleChange('healthState', e.detail.value!)} />
         </div>
 
         {/* Current PF | Max PF | Movement | Fatique */}
@@ -57,9 +58,9 @@ const InfoPart: React.FC<InfoPartProps> = ({
         </div>
 
         {/* Health State */}
-        <div style={{ gridColumn: '1/5' }}>
-            <IonLabel position="stacked">Health State</IonLabel>
-            <IonInput value={char.healthState} onIonChange={e => handleChange('healthState', e.detail.value!)} />
+        <div style={{ gridColumn: '1/7' }}>
+            <IonLabel position="stacked">Description</IonLabel>
+            <IonTextarea value={char.description} onIonChange={e => handleChange('description', e.detail.value!)} rows={5} />
         </div>
     </div>
 );

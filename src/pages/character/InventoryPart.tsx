@@ -143,7 +143,7 @@ const InventoryPart: React.FC<{ char: Character, setStateChar: React.Dispatch<Re
                                             <IonRow class='fillh flexbox' style={{ alingItems: 'center' }}>
                                                 <IonCol style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
                                                     <IonLabel>
-                                                        <strong>{item.name}</strong>
+                                                        <strong>{item.name}</strong> {item.quantity != 1 && "x" + item.quantity}
                                                     </IonLabel>
                                                 </IonCol>
                                                 <IonCol style={{ flex: 0 }}>
@@ -176,7 +176,6 @@ const InventoryPart: React.FC<{ char: Character, setStateChar: React.Dispatch<Re
                                             </IonRow>
                                             <IonRow>
                                                 <div>{item.description}</div>
-                                                <div> Quantità: {item.quantity}</div>
                                             </IonRow>
                                         </IonGrid>
                                     </IonItem>

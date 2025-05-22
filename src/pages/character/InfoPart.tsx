@@ -42,12 +42,16 @@ const InfoPart: React.FC<InfoPartProps> = ({
         </div>
         {/* Description */}
 
-        <div style={{ gridColumn: '1/5' }}>
+        <div style={{ gridColumn: '1/4' }}>
             <IonLabel position="stacked">Health State</IonLabel>
             <IonInput value={char.healthState} onIonChange={e => handleChange('healthState', e.detail.value!)} />
         </div>
 
         {/* Current PF | Max PF | Movement | Fatique */}
+        <div>
+            <IonLabel position="stacked">Monete</IonLabel>
+            <IonInput type="number" value={char.coins} onIonChange={e => handleChange('coins', Number(e.detail.value))} />
+        </div>
         <div>
             <IonLabel position="stacked">Movement</IonLabel>
             <IonInput type="number" value={char.movement} onIonChange={e => handleChange('movement', Number(e.detail.value))} />

@@ -48,7 +48,7 @@ export const DiceRoller: React.FC = () => {
                     <IonGrid>
                         {rolls.length > 0
                             ? rolls.map((val: number, idx: number) => (
-                                <IonCol key={idx}>
+                                <IonCol key={idx} style={{ padding: 4 }}>
                                     {val === 6 ? <IonText color="success">{val}</IonText> : <IonText>{val}</IonText>}
                                 </IonCol>
                             ))

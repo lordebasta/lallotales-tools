@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonHeader, IonMenuButton, IonPage, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonMenuButton, IonPage, IonTab, IonTabBar, IonTabButton, IonTabs, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { Redirect, useParams } from 'react-router';
 import React, { useState } from 'react';
 import { auth } from '../services/fireauth';
@@ -11,11 +11,14 @@ import { selectCharactersWithMap, setCharacter } from '../store/characterSlice';
 import InfoPart from './character/InfoPart';
 import TraitsPart from './character/TraitsPart';
 import InventoryPart from './character/InventoryPart';
+import useWindowDimensions from '../services/windowSize';
 
 
 const CharacterPage: React.FC = () => {
   const { index } = useParams<{ index: string }>();
   const dispatch = useDispatch();
+
+  const { height, width } = useWindowDimensions();
 
   const characters = useSelector(selectCharactersWithMap);
   const [char, setStateChar] = useState<Character>(() => {
@@ -84,38 +87,111 @@ const CharacterPage: React.FC = () => {
           </div>
         </IonToolbar>
       </IonHeader>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          maxWidth: 1100,
-          margin: '0 auto',
-          height: '100%',
-          minHeight: 600,
-        }}
-      >
-        {/* Main content: InfoPart, TraitsPart, InventoryPart */}
-        <div style={{ flex: 2, display: 'flex', flexDirection: 'column', borderRight: '1px solid #eee' }}>
-          {/* InfoPart at the top */}
-          <div style={{ borderBottom: '1px solid #eee' }}>
-            <InfoPart
-              char={char}
-              maxPf={maxPf}
-              handleChange={handleChange}
-            />
-          </div>
-          {/* Traits and Inventory side by side */}
-          <div style={{ display: 'flex', flex: 1, minHeight: 300 }}>
-            <div style={{ flex: 1, borderRight: '1px solid #eee' }}>
-              <TraitsPart char={char} setStateChar={setStateChar} />
+      {width < 600 ?
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            maxWidth: 1100,
+            margin: '0 auto',
+            height: '100%',
+            minHeight: 600,
+          }}
+        >
+          {/* Main content: InfoPart, TraitsPart, InventoryPart */}
+          <div style={{ flex: 2, display: 'flex', flexDirection: 'column', borderRight: '1px solid #eee' }}>
+            {/* InfoPart at the top */}
+            <div style={{ borderBottom: '1px solid #eee' }}>
+              <InfoPart
+                char={char}
+                maxPf={maxPf}
+                handleChange={handleChange}
+              />
             </div>
-            <div style={{ flex: 1 }}>
-              <InventoryPart char={char} setStateChar={setStateChar} />
+            {/* Traits and Inventory side by side */}
+            <div style={{ display: 'flex', flex: 1, minHeight: 300 }}>
+              <div style={{ flex: 1, borderRight: '1px solid #eee' }}>
+                <TraitsPart char={char} setStateChar={setStateChar} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <InventoryPart char={char} setStateChar={setStateChar} />
+              </div>
             </div>
           </div>
+          {skillsPart(handleDrop, char, handleDragStart, draggedSkill)}
         </div>
-        {skillsPart(handleDrop, char, handleDragStart, draggedSkill)}
-      </div>
+        : <div>
+          <IonTabs>
+            <IonTab tab="home">
+              <div id="home-page">
+                <IonHeader>
+                  <IonToolbar>
+                    <IonTitle>Listen now</IonTitle>
+                  </IonToolbar>
+                </IonHeader>
+                <IonContent>
+                  <div className="example-content">Listen now content</div>
+                </IonContent>
+              </div>
+            </IonTab>
+            <IonTab tab="radio">
+              <div id="radio-page">
+                <IonHeader>
+                  <IonToolbar>
+                    <IonTitle>Radio</IonTitle>
+                  </IonToolbar>
+                </IonHeader>
+                <IonContent>
+                  <div className="example-content">Radio content</div>
+                </IonContent>
+              </div>
+            </IonTab>
+            <IonTab tab="library">
+              <div id="library-page">
+                <IonHeader>
+                  <IonToolbar>
+                    <IonTitle>Library</IonTitle>
+                  </IonToolbar>
+                </IonHeader>
+                <IonContent>
+                  <div className="example-content">Library content</div>
+                </IonContent>
+              </div>
+            </IonTab>
+            <IonTab tab="search">
+              <div id="search-page">
+                <IonHeader>
+                  <IonToolbar>
+                    <IonTitle>Search</IonTitle>
+                  </IonToolbar>
+                </IonHeader>
+                <IonContent>
+                  <div className="example-content">Search content</div>
+                </IonContent>
+              </div>
+            </IonTab>
+
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="home">
+                <IonIcon icon={playCircle} />
+                Listen Now
+              </IonTabButton>
+              <IonTabButton tab="radio">
+                <IonIcon icon={radio} />
+                Radio
+              </IonTabButton>
+              <IonTabButton tab="library">
+                <IonIcon icon={library} />
+                Library
+              </IonTabButton>
+              <IonTabButton tab="search">
+                <IonIcon icon={search} />
+                Search
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </div>
+      }
     </IonPage >
   );
 };

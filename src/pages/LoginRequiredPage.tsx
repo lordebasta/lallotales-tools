@@ -14,13 +14,12 @@ const LoginRequiredPage: React.FC = () => {
                 <IonButtons slot="start">
                     <IonMenuButton />
                 </IonButtons>
-                <IonTitle>Character</IonTitle>
+                <IonTitle></IonTitle>
             </IonToolbar>
         </IonHeader>
         <IonContent>
-            <h1>Please login to see your character</h1>
             <IonButton onClick={handleGoogleLogin} style={{ marginTop: 16 }}>
-                Login with Google
+                Accedi con Google
             </IonButton>
         </IonContent>
     </IonPage>

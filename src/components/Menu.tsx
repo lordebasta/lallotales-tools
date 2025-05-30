@@ -9,11 +9,13 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
+  IonRow,
   IonText,
+  IonAlert,
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { personCircleOutline } from 'ionicons/icons';
+import { personCircleOutline, trash } from 'ionicons/icons';
 import './Menu.css';
 import { DiceRoller } from './DiceRoller';
 import React, { useState, useRef, useEffect } from 'react';
@@ -21,7 +23,9 @@ import { auth, signInWithGoogle, signOut } from '../services/fireauth';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FirestoreService } from '../services/firestore';
 import { useSelector } from 'react-redux';
-import { selectCharactersWithMap } from '../store/characterSlice';
+import { selectCharactersWithMap, setCharacters } from '../store/characterSlice';
+import { store } from '../store/store';
+import { jsonifyCharacters } from '../services/character';
 
 interface AppPage {
   url: string;
@@ -43,6 +47,7 @@ const Menu: React.FC = () => {
 
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<{ open: boolean, characterIdx: number | null }>({ open: false, characterIdx: null });
   const dropdownRef = useRef<HTMLDivElement>(null);
   const characters = useSelector(selectCharactersWithMap);
 
@@ -62,6 +67,8 @@ const Menu: React.FC = () => {
 
   const handleNewCharacter = async () => {
     await FirestoreService.getInstance().createNewCharacter();
+    const updated = await FirestoreService.getInstance().getCharacters();
+    store.dispatch(setCharacters(jsonifyCharacters(updated)));
   }
 
   useEffect(() => {
@@ -107,7 +114,6 @@ const Menu: React.FC = () => {
                 <IonIcon style={{ fontSize: 40 }} icon={personCircleOutline} slot="icon-only" />
               ) : (
                 <div style={{ width: 40, height: 40, borderRadius: '50%', overflow: 'hidden' }}>
-
                   <IonImg src={auth.currentUser.photoURL} />
                 </div>
               )}
@@ -164,9 +170,16 @@ const Menu: React.FC = () => {
               {
                 characters.map((character, index) => (
                   <IonMenuToggle key={index + 1} autoHide={false}>
-                    <IonItem className={location.pathname === '/character' ? 'selected' : ''} routerLink={'/character/' + index} routerDirection="none" lines="none" detail={false}>
-                      <IonLabel>{character.name}</IonLabel>
-                    </IonItem>
+                    <IonRow class='flexbox'>
+                      <IonItem style={{ flex: 1, paddingRight: '10px' }} className={location.pathname === '/character' ? 'selected' : ''} routerLink={'/character/' + index} routerDirection="none" lines="none" detail={false}>
+                        <IonLabel>{character.name}</IonLabel>
+                      </IonItem>
+                      <button
+                        onClick={() => setConfirmDelete({ open: true, characterIdx: index })}
+                      >
+                        <IonIcon icon={trash} style={{ padding: '0px 5px 0px 5px', fontSize: 18 }} />
+                      </button>
+                    </IonRow>
                   </IonMenuToggle>
                 ))
               }
@@ -177,6 +190,31 @@ const Menu: React.FC = () => {
             </IonButton>
           }
         </IonList>
+        <IonAlert
+          isOpen={confirmDelete.open}
+          header="Conferma eliminazione"
+          message="Sei sicuro di voler eliminare questo personaggio?"
+          buttons={[
+            {
+              text: 'Annulla',
+              role: 'cancel',
+              handler: () => setConfirmDelete({ open: false, characterIdx: null })
+            },
+            {
+              text: 'Elimina',
+              role: 'destructive',
+              handler: async () => {
+                if (confirmDelete.characterIdx !== null) {
+                  FirestoreService.getInstance().deleteCharacter(characters[confirmDelete.characterIdx].id);
+                  const updated = await FirestoreService.getInstance().getCharacters();
+                  store.dispatch(setCharacters(jsonifyCharacters(updated)));
+                }
+                setConfirmDelete({ open: false, characterIdx: null });
+              }
+            }
+          ]}
+          onDidDismiss={() => setConfirmDelete({ open: false, characterIdx: null })}
+        />
       </IonContent>
       <div style={{ backgroundColor: "var(--ion-item-background, var(--ion-background-color, #fff)" }}>
         <DiceRoller />

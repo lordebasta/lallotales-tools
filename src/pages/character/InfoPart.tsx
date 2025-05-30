@@ -11,7 +11,6 @@ interface InfoPartProps {
 
 const InfoPart: React.FC<InfoPartProps> = ({
     char,
-    maxPf,
     handleChange,
 }) => (
     <div
@@ -24,26 +23,26 @@ const InfoPart: React.FC<InfoPartProps> = ({
     >
         {/* Name | Level */}
         <div style={{ gridColumn: '1/4' }}>
-            <IonLabel position="stacked">Name</IonLabel>
+            <IonLabel position="stacked">Nome</IonLabel>
             <IonInput value={char.name} onIonChange={e => handleChange('name', e.detail.value!)} />
         </div>
         <div >
-            <IonLabel position="stacked">Level</IonLabel>
+            <IonLabel position="stacked">Livello</IonLabel>
             <IonInput type="number" value={char.level} onIonChange={e => handleChange('level', Number(e.detail.value))} />
         </div>
 
         <div>
-            <IonLabel position="stacked">Current PF</IonLabel>
+            <IonLabel position="stacked">PF attuali</IonLabel>
             <IonInput type="number" value={char.currentPf} onIonChange={e => handleChange('currentPf', Number(e.detail.value))} />
         </div>
         <div>
-            <IonLabel position="stacked">Max PF</IonLabel>
+            <IonLabel position="stacked">PF massimi</IonLabel>
             <IonInput type="number" value={char.maxPf} onIonChange={e => handleChange('maxPf', Number(e.detail.value))} />
         </div>
         {/* Description */}
 
         <div style={{ gridColumn: '1/4' }}>
-            <IonLabel position="stacked">Health State</IonLabel>
+            <IonLabel position="stacked">Stati Salute</IonLabel>
             <IonInput value={char.healthState} onIonChange={e => handleChange('healthState', e.detail.value!)} />
         </div>
 
@@ -53,17 +52,17 @@ const InfoPart: React.FC<InfoPartProps> = ({
             <IonInput type="number" value={char.coins} onIonChange={e => handleChange('coins', Number(e.detail.value))} />
         </div>
         <div>
-            <IonLabel position="stacked">Movement</IonLabel>
+            <IonLabel position="stacked">Movimento</IonLabel>
             <IonInput type="number" value={char.movement} onIonChange={e => handleChange('movement', Number(e.detail.value))} />
         </div>
         <div>
-            <IonLabel position="stacked">Fatique</IonLabel>
+            <IonLabel position="stacked">Affaticato</IonLabel>
             <IonInput type="number" value={char.fatique} onIonChange={e => handleChange('fatique', Number(e.detail.value))} />
         </div>
 
         {/* Health State */}
         <div style={{ gridColumn: '1/7' }}>
-            <IonLabel position="stacked">Description</IonLabel>
+            <IonLabel position="stacked">Descrizione</IonLabel>
             <IonTextarea value={char.description} onIonChange={e => handleChange('description', e.detail.value!)} rows={5} />
         </div>
     </div>

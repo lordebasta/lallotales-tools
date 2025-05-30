@@ -1,7 +1,7 @@
 import { Character, InventoryItem, InventorySection, Trait } from "./character";
 import { auth } from "./fireauth";
 import { app } from "./firebase";
-import { doc, addDoc, collection, DocumentData, getDocs, getFirestore, query, QueryDocumentSnapshot, setDoc, SnapshotOptions, where } from "firebase/firestore";
+import { doc, addDoc, collection, DocumentData, getDocs, getFirestore, query, QueryDocumentSnapshot, setDoc, SnapshotOptions, where, deleteDoc } from "firebase/firestore";
 
 const db = getFirestore(app);
 export class FirestoreService {
@@ -20,6 +20,10 @@ export class FirestoreService {
         const docRef = await addDoc(collection(db, "characters"), characterConverter.toFirestore(character));
         console.log("Document written with ID: ", docRef.id);
         return docRef.id;
+    }
+
+    async deleteCharacter(characterId: string): Promise<void> {
+        await deleteDoc(doc(db, "characters", characterId))
     }
 
     async getCharacters(): Promise<Character[]> {

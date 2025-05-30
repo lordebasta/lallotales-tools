@@ -5,6 +5,7 @@ http://ionicframework.com/docs/theming/ */
     --bg-purple: #1F1F33;
     --orange: #F89753;
     --grey: #1e1e1e;
+    --background-black: #121212;
     --ion-color-primary: var(--orange);
 }
 

@@ -73,7 +73,9 @@ const CharacterPage: React.FC = () => {
   }
 
   return (
-    <IonPage>
+    <IonPage style={{
+      backgroundColor: 'var(--grey)'
+    }}>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -93,9 +95,11 @@ const CharacterPage: React.FC = () => {
           display: 'flex',
           flexDirection: 'row',
           maxWidth: 1100,
-          margin: '0 auto',
+          margin: '10px auto',
           height: '100%',
           minHeight: 600,
+          // backgroundColor: 'var(--background-black)',
+          // borderRadius: 8,
         }}
       >
         <div style={{ flex: 2, display: 'flex', flexDirection: 'column', borderRight: '1px solid #eee' }}>
@@ -106,7 +110,6 @@ const CharacterPage: React.FC = () => {
               handleChange={handleChange}
             />
           </div>
-          {/* Traits and Inventory side by side */}
           <div style={{ display: 'flex', flex: 1, minHeight: 300 }}>
             <div style={{ flex: 1, borderRight: '1px solid #eee' }}>
               <TraitsPart char={char} setStateChar={setStateChar} />

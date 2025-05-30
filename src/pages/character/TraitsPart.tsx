@@ -24,9 +24,14 @@ const TraitsPart: React.FC<{ char: Character, setStateChar: React.Dispatch<React
 
     const editTraitAlert = editTraitAlertState.open && <IonAlert
         isOpen={editTraitAlertState.open}
-        header="Nuova Capacità"
+        header="Modifica Capacità"
         buttons={[
-            'Annulla', {
+            {
+                text: "Annulla",
+                handler: () => {
+                    setEditTraitAlertState({ open: false, index: -1 });
+                }
+            }, {
                 text: 'Modifica',
                 handler: (data) => {
                     const updatedTrait = {

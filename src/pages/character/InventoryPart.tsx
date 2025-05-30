@@ -120,7 +120,7 @@ const InventoryPart: React.FC<{ char: Character, setStateChar: React.Dispatch<Re
                         <IonItem slot="header" color="light">
                             <IonLabel>{section.name}</IonLabel>
                         </IonItem>
-                        <div slot="content" style={{ padding: 8, display: 'flex', flexDirection: 'column', justifyContent: 'stretch' }}>
+                        <div slot="content" style={{ padding: 8, display: 'flex', flexDirection: 'column', justifyContent: 'stretch', backgroundColor: 'var(--grey)' }}>
                             <button
                                 style={{
                                     backgroundColor: 'var(--orange)',
@@ -136,7 +136,9 @@ const InventoryPart: React.FC<{ char: Character, setStateChar: React.Dispatch<Re
                                 Modifica
                             </button>
 
-                            <IonList>
+                            <IonList style={{
+                                border: '1px solid var(--orange)',
+                            }}>
                                 {section.items.map((item: InventoryItem, i: number) => (
                                     <IonItem style={{ margin: 0, }} key={item.name + i}>
                                         <IonGrid style={{ padding: '4px 0px 4px 0px' }}>

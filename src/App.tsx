@@ -42,6 +42,7 @@ import { useEffect } from 'react';
 import { FirestoreService } from './services/firestore';
 import { setCharacters } from './store/characterSlice';
 import { jsonifyCharacters } from './services/character';
+import { DiceRoller } from './components/DiceRoller';
 
 setupIonicReact();
 
@@ -64,7 +65,7 @@ const App: React.FC = () => {
       <IonApp>
         <IonReactRouter>
           <IonSplitPane contentId="main">
-            <Menu />
+            {window.location.pathname !== '/dice-roller' && <Menu />}
             <IonRouterOutlet id="main">
               <Route path="/" exact={true}>
                 {auth.currentUser ? <Redirect to="/home" /> : <Redirect to="/login" />}
@@ -77,6 +78,11 @@ const App: React.FC = () => {
               </Route>
               <Route path="/folder/:name" exact={true}>
                 <Page />
+              </Route>
+              <Route path="/dice-roller" exact={true}>
+                <div className="fillv" style={{ backgroundColor: "var(--bg-purple)" }}>
+                  <DiceRoller />
+                </div>
               </Route>
             </IonRouterOutlet>
           </IonSplitPane>

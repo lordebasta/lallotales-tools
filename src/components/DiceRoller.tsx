@@ -37,9 +37,9 @@ export const DiceRoller: React.FC = () => {
             </IonText>
         </IonButton >
 
-    return <div className="" style={{ padding: 15, margin: 10, borderRadius: 15, backgroundColor: "var(--bg-purple)" }}>
+    return <div className="fillv" style={{ padding: 15, margin: 10, borderRadius: 15, backgroundColor: "var(--bg-purple)" }}>
         <h2 style={{ fontWeight: "bold" }}>Lanciatore di dadi</h2>
-        <div>
+        <div className="center fillv">
             <div style={{ paddingBottom: 20, paddingTop: 20 }} className='center'>
                 <div className="v-flex-list align-center">
                     <IonText color="primary" style={{ fontSize: 36 }}>

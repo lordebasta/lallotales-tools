@@ -65,19 +65,29 @@ const App: React.FC = () => {
       <IonApp>
         <IonReactRouter>
           <IonSplitPane contentId="main">
+            {/*
             {window.location.pathname !== '/dice-roller' && <Menu />}
+            <Menu />
+              <IonRouterOutlet id="main">
+                <Route path="/" exact={true}>
+                  {auth.currentUser ? <Redirect to="/home" /> : <Redirect to="/login" />}
+                </Route>
+                <Route path="/login" exact={true}>
+                  <LoginRequiredPage />
+                </Route>
+                <Route path="/character/:index" exact={true}>
+                  <Character />
+                </Route>
+                <Route path="/dice-roller" exact={true}>
+                  <div className="fillv" style={{ backgroundColor: "var(--bg-purple)" }}>
+                    <DiceRoller />
+                  </div>
+                </Route>
+              </IonRouterOutlet>
+            */}
             <IonRouterOutlet id="main">
               <Route path="/" exact={true}>
-                {auth.currentUser ? <Redirect to="/home" /> : <Redirect to="/login" />}
-              </Route>
-              <Route path="/login" exact={true}>
-                <LoginRequiredPage />
-              </Route>
-              <Route path="/character/:index" exact={true}>
-                <Character />
-              </Route>
-              <Route path="/folder/:name" exact={true}>
-                <Page />
+                <Redirect to="/dice-roller" />
               </Route>
               <Route path="/dice-roller" exact={true}>
                 <div className="fillv" style={{ backgroundColor: "var(--bg-purple)" }}>
